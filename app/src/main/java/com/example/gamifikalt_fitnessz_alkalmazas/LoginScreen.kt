@@ -12,7 +12,6 @@ import androidx.compose.material3.TextButton
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -21,9 +20,8 @@ import androidx.compose.ui.unit.dp
 fun LoginScreen(
     onLoginClick: (String, String) -> Unit = { _, _ -> },
     onRegisterClick: () -> Unit = {}
-
 ) {
-    var email by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
 
     Surface(
@@ -45,11 +43,10 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             OutlinedTextField(
-                value = email,
-                onValueChange = { email = it },
-                label = { Text("E-mail") },
+                value = username,
+                onValueChange = { username = it },
+                label = { Text("Felhasználónév") },
                 singleLine = true,
-                keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -67,7 +64,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             Button(
-                onClick = { onLoginClick(email, password) },
+                onClick = { onLoginClick(username, password) },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Bejelentkezés")
@@ -76,7 +73,7 @@ fun LoginScreen(
             Spacer(modifier = Modifier.height(16.dp))
 
             TextButton(onClick = onRegisterClick) {
-                Text("Még nincs profilod? Regsiztrálj most!")
+                Text("Még nincs profilod? Regisztrálj most!")
             }
         }
     }
@@ -89,4 +86,3 @@ fun LoginScreenPreview() {
         LoginScreen()
     }
 }
-

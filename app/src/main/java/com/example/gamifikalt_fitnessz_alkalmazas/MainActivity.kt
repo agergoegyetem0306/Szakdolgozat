@@ -20,12 +20,14 @@ class MainActivity : ComponentActivity() {
             Gamifikalt_Fitnessz_AlkalmazasTheme {
                 if (showLogin) {
                     LoginScreen(
-                        onLoginClick = { email, password -> },
+                        onLoginClick = { username, password -> },
                         onRegisterClick = { showLogin = false }
                     )
                 } else {
                     RegistrationScreen(
-                        onRegisterClick = { email, password -> },
+                        onRegisterClick = { email, username, password ->
+                            showLogin = true
+                        },
                         onBackClick = { showLogin = true }
                     )
                 }

@@ -14,14 +14,18 @@ import com.example.gamifikalt_fitnessz_alkalmazas.ui.theme.Gamifikalt_Fitnessz_A
 
 @Composable
 fun RegistrationScreen(
-    onRegisterClick: (String, String) -> Unit = { _, _ -> },
+    onRegisterClick: (String, String, String) -> Unit = { _, _, _ -> },
     onBackClick: () -> Unit = {}
 ) {
     var email by remember { mutableStateOf("") }
+    var username by remember { mutableStateOf("") }
     var password by remember { mutableStateOf("") }
     var passwordAgain by remember { mutableStateOf("") }
 
-    val valid = password.length >= 8 && password == passwordAgain
+    val valid = email.contains("@") &&
+            username.isNotBlank() &&
+            password.length >= 8 &&
+            password == passwordAgain
 
     Surface(
         modifier = Modifier.fillMaxSize(),
@@ -44,6 +48,16 @@ fun RegistrationScreen(
                 label = { Text("E-mail") },
                 singleLine = true,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Email),
+                modifier = Modifier.fillMaxWidth()
+            )
+
+            Spacer(modifier = Modifier.height(16.dp))
+
+            OutlinedTextField(
+                value = username,
+                onValueChange = { username = it },
+                label = { Text("Felhasználónév") },
+                singleLine = true,
                 modifier = Modifier.fillMaxWidth()
             )
 
@@ -80,7 +94,7 @@ fun RegistrationScreen(
             Spacer(modifier = Modifier.height(24.dp))
 
             Button(
-                onClick = { onRegisterClick(email, password) },
+                onClick = { onRegisterClick(email, username, password) },
                 enabled = valid,
                 modifier = Modifier.fillMaxWidth()
             ) {

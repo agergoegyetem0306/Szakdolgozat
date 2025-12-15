@@ -16,8 +16,12 @@ dependencyResolutionManagement {
     repositories {
         google()
         mavenCentral()
+        maven { url = uri("D:/Szakdolgozat/flutter_module/build/host/outputs/repo") }
+        maven { url = uri("https://storage.googleapis.com/download.flutter.io") }
     }
 }
 
 rootProject.name = "Gamifikalt_Fitnessz_Alkalmazas"
 include(":app")
+
+
