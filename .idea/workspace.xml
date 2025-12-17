@@ -4,13 +4,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc394efd-cfcc-4658-b274-5fe5a5a86932" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.name" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/php.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/backend-api/routes/api.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/Szakdolgozat.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/Szakdolgozat.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-    </list>
+    <list default="true" id="cc394efd-cfcc-4658-b274-5fe5a5a86932" name="Changes" comment="" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -81,7 +75,7 @@
       <updated>1765824850359</updated>
       <workItem from="1765901246258" duration="912000" />
       <workItem from="1765902215092" duration="216000" />
-      <workItem from="1765902450237" duration="695000" />
+      <workItem from="1765902450237" duration="1298000" />
     </task>
     <servers />
   </component>
