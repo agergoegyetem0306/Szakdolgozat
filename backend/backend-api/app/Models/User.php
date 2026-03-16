@@ -15,6 +15,15 @@ class User extends Authenticatable
         'email',
         'password',
         'api_token',
+        'gender',
+        'age',
+        'height',
+        'weight',
+        'goal_type',
+        'calorie_target',
+        'xp',
+        'current_streak',
+        'best_streak',
     ];
 
     protected $hidden = [
@@ -30,4 +39,17 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function activityLogs()
+    {
+        return $this->hasMany(ActivityLog::class);
+    }
+    public function foodLogs()
+    {
+        return $this->hasMany(FoodLog::class);
+    }
+    public function dailyXpLogs()
+    {
+        return $this->hasMany(DailyXpLog::class);
+    }
+
 }

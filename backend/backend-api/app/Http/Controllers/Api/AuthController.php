@@ -16,7 +16,11 @@ class AuthController extends Controller
         $validator = Validator::make($request->all(), [
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|max:255|unique:users,email',
-            'password' => 'required|string|min:6',
+            'password' => 'required|string|min:8',
+            'gender' => 'required|in:male,female',
+            'age' => 'required|integer|min:1|max:120',
+            'height' => 'required|integer|min:50|max:250',
+            'weight' => 'required|numeric|min:20|max:500',
         ]);
 
         if ($validator->fails()) {
@@ -30,6 +34,10 @@ class AuthController extends Controller
             'email' => $request->email,
             'password' => Hash::make($request->password),
             'api_token' => Str::random(60),
+            'gender' => $request->gender,
+            'age' => $request->age,
+            'height' => $request->height,
+            'weight' => $request->weight,
         ]);
 
         return response()->json([
@@ -37,6 +45,7 @@ class AuthController extends Controller
             'token' => $user->api_token,
         ], 201);
     }
+
     public function login(Request $request)
     {
         $validator = Validator::make($request->all(), [
@@ -66,5 +75,4 @@ class AuthController extends Controller
             'token' => $user->api_token,
         ]);
     }
-
 }

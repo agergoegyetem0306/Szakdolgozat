@@ -4,7 +4,33 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="cc394efd-cfcc-4658-b274-5fe5a5a86932" name="Changes" comment="" />
+    <list default="true" id="cc394efd-cfcc-4658-b274-5fe5a5a86932" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/backend/backend-api/app/Http/Controllers/Api/ActivityController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/backend-api/app/Http/Controllers/Api/FoodController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/backend-api/app/Http/Controllers/Api/NutritionGoalController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/backend-api/app/Http/Controllers/Api/WeeklyStatsController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/backend-api/app/Http/Controllers/Api/XpController.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/backend-api/app/Models/ActivityLog.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/backend-api/app/Models/DailyXpLog.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/backend-api/app/Models/Food.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/backend-api/app/Models/FoodLog.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/backend-api/app/Services/StreakService.php" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/backend/backend-api/app/Services/XpService.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/backend-api/app/Http/Controllers/Api/AuthController.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend-api/app/Http/Controllers/Api/AuthController.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/backend-api/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend-api/app/Models/User.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/backend-api/database/seeders/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend-api/database/seeders/DatabaseSeeder.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/backend-api/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend-api/routes/api.php" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile_app/app/build.gradle.kts" beforeDir="false" afterPath="$PROJECT_DIR$/mobile_app/app/build.gradle.kts" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/HomeScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/HomeScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/LoginScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/LoginScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/RegistrationScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/RegistrationScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/network/ApiService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/network/ApiService.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/ui/theme/Color.kt" beforeDir="false" afterPath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/ui/theme/Color.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/ui/theme/Theme.kt" beforeDir="false" afterPath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/ui/theme/Theme.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/ui/theme/Type.kt" beforeDir="false" afterPath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/ui/theme/Type.kt" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -76,6 +102,11 @@
       <workItem from="1765901246258" duration="912000" />
       <workItem from="1765902215092" duration="216000" />
       <workItem from="1765902450237" duration="1298000" />
+      <workItem from="1773061650324" duration="2097000" />
+      <workItem from="1773067665783" duration="1665000" />
+      <workItem from="1773316731797" duration="8404000" />
+      <workItem from="1773411447899" duration="2135000" />
+      <workItem from="1773663032395" duration="7540000" />
     </task>
     <servers />
   </component>
