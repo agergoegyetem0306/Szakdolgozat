@@ -8,6 +8,8 @@ use App\Http\Controllers\Api\FoodController;
 use App\Http\Controllers\Api\NutritionGoalController;
 use App\Http\Controllers\Api\XpController;
 use App\Http\Controllers\Api\WeeklyStatsController;
+use App\Http\Controllers\Api\DailyChallengeController;
+use App\Http\Controllers\Api\LeaderboardController;
 
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
@@ -25,6 +27,11 @@ Route::middleware('api.token')->get('/nutrition-goal/options', [NutritionGoalCon
 Route::middleware('api.token')->post('/nutrition-goal', [NutritionGoalController::class, 'update']);
 Route::middleware('api.token')->get('/xp-summary', [XpController::class, 'summary']);
 Route::middleware('api.token')->get('/weekly-stats', [WeeklyStatsController::class, 'summary']);
+Route::middleware('api.token')->get('/daily-challenge', [DailyChallengeController::class, 'today']);
+Route::middleware('api.token')->get('/leaderboards', [LeaderboardController::class, 'index']);
+Route::middleware('api.token')->post('/leaderboards', [LeaderboardController::class, 'store']);
+Route::middleware('api.token')->post('/leaderboards/join', [LeaderboardController::class, 'join']);
+Route::middleware('api.token')->get('/leaderboards/{id}', [LeaderboardController::class, 'show']);
 
 use Illuminate\Http\Request;
 

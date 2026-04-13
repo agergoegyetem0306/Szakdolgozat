@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\ActivityLog;
+use App\Services\ChallengeProgressService;
 use App\Services\StreakService;
 use App\Services\XpService;
 use Illuminate\Http\Request;
@@ -11,8 +12,12 @@ use Carbon\Carbon;
 
 class ActivityController extends Controller
 {
-    public function store(Request $request, XpService $xpService, StreakService $streakService)
-    {
+    public function store(
+        Request $request,
+        XpService $xpService,
+        StreakService $streakService,
+        ChallengeProgressService $challengeProgressService
+    ) {
         $user = $request->get('auth_user');
 
         $validated = $request->validate([
@@ -70,6 +75,7 @@ class ActivityController extends Controller
 
         $dailyXpLog = $xpService->recalculateToday($freshUser);
         $streakData = $streakService->recalculate($freshUser->fresh());
+        $dailyChallenge = $challengeProgressService->checkTodayChallenge($freshUser->fresh());
 
         return response()->json([
             'activity' => $activityLog,
@@ -80,6 +86,21 @@ class ActivityController extends Controller
                 'user_total_xp' => $freshUser->fresh()->xp,
             ],
             'streak' => $streakData,
+            'daily_challenge' => $dailyChallenge ? [
+                'id' => $dailyChallenge->id,
+                'is_completed' => $dailyChallenge->is_completed,
+                'reward_granted' => $dailyChallenge->reward_granted,
+                'challenge' => [
+                    'id' => $dailyChallenge->challenge->id,
+                    'title' => $dailyChallenge->challenge->title,
+                    'description' => $dailyChallenge->challenge->description,
+                    'challenge_type' => $dailyChallenge->challenge->challenge_type,
+                    'category' => $dailyChallenge->challenge->category,
+                    'activity_type' => $dailyChallenge->challenge->activity_type,
+                    'target_value' => $dailyChallenge->challenge->target_value,
+                    'reward_xp' => $dailyChallenge->challenge->reward_xp,
+                ],
+            ] : null,
         ], 201);
     }
 

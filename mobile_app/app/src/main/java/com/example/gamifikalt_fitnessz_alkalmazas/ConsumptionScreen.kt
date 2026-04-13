@@ -239,6 +239,7 @@ fun ConsumptionScreen(
                         ) {
                             if (response.isSuccessful) {
                                 showAddCustomFoodDialog = false
+                                errorText = null
                                 successText = "Saját étel sikeresen hozzáadva"
                                 loadData()
                             } else {
@@ -392,12 +393,12 @@ fun ConsumptionScreen(
                     Tab(
                         selected = selectedTab == 1,
                         onClick = { selectedTab = 1 },
-                        text = { Text("Ételadatbázis") }
+                        text = { Text("Ételek") }
                     )
                     Tab(
                         selected = selectedTab == 2,
                         onClick = { selectedTab = 2 },
-                        text = { Text("Goal") }
+                        text = { Text("Cél") }
                     )
                 }
 
@@ -439,20 +440,6 @@ fun ConsumptionScreen(
                     }
 
                     1 -> {
-                        if (foods.isEmpty() && !loading) {
-                            Text(
-                                text = "Nincs elérhető étel.",
-                                style = MaterialTheme.typography.bodyLarge
-                            )
-                        } else {
-                            foods.forEach { food ->
-                                FoodItemCard(food = food)
-                                Spacer(modifier = Modifier.height(12.dp))
-                            }
-                        }
-
-                        Spacer(modifier = Modifier.height(8.dp))
-
                         Button(
                             onClick = {
                                 errorText = null
@@ -470,6 +457,19 @@ fun ConsumptionScreen(
                         ) {
                             Text("Saját étel hozzáadása", style = MaterialTheme.typography.labelLarge)
                         }
+                        if (foods.isEmpty() && !loading) {
+                            Text(
+                                text = "Nincs elérhető étel.",
+                                style = MaterialTheme.typography.bodyLarge
+                            )
+                        } else {
+                            foods.forEach { food ->
+                                FoodItemCard(food = food)
+                                Spacer(modifier = Modifier.height(12.dp))
+                            }
+                        }
+
+                        Spacer(modifier = Modifier.height(8.dp))
                     }
 
                     2 -> {
@@ -670,7 +670,7 @@ fun FoodItemCard(food: FoodResponse) {
             Spacer(modifier = Modifier.height(8.dp))
 
             Text(
-                text = if (food.is_custom) "Saját étel" else "Rendszerétel",
+                text = if (food.is_custom) "Saját étel" else "Alapélelmiszer",
                 style = MaterialTheme.typography.bodySmall,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -687,7 +687,7 @@ fun GoalTabContentStyled(
 ) {
     Column(modifier = Modifier.fillMaxWidth()) {
         if (goalOptionsResponse == null) {
-            Text("A goal adatok még nem érhetők el.")
+            Text("A céladatok még nem érhetők el.")
             return
         }
 
@@ -760,7 +760,7 @@ fun GoalOptionCard(
             modifier = Modifier.padding(18.dp)
         ) {
             Text(
-                text = option.label,
+                text = goalLabel(option.label),
                 style = MaterialTheme.typography.titleMedium,
                 color = if (selected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
             )
@@ -1154,11 +1154,11 @@ fun AddCustomFoodDialog(
 
 fun goalLabel(goalType: String): String {
     return when (goalType) {
-        "aggressive_cut" -> "Aggressive Cut"
-        "modest_cut" -> "Modest Cut"
-        "maintain" -> "Maintain Weight"
-        "modest_bulk" -> "Modest Bulk"
-        "aggressive_bulk" -> "Aggressive Bulk"
+        "aggressive_cut" -> "Agresszív deficit"
+        "modest_cut" -> "Mérsékelt deficit"
+        "maintain" -> "Súlytartás"
+        "modest_bulk" -> "Mérsékelt tömegnövelés"
+        "aggressive_bulk" -> "Agresszív tömegnövelés"
         else -> goalType
     }
 }

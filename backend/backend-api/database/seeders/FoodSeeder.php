@@ -57,15 +57,19 @@ class FoodSeeder extends Seeder
         ];
 
         foreach ($foods as $food) {
-            Food::create([
-                'name' => $food['name'],
-                'calories_per_100g' => $food['calories_per_100g'],
-                'protein_per_100g' => $food['protein_per_100g'],
-                'carbs_per_100g' => $food['carbs_per_100g'],
-                'fat_per_100g' => $food['fat_per_100g'],
-                'is_custom' => false,
-                'user_id' => null,
-            ]);
+            Food::updateOrCreate(
+                [
+                    'name' => $food['name'],
+                    'is_custom' => false,
+                    'user_id' => null,
+                ],
+                [
+                    'calories_per_100g' => $food['calories_per_100g'],
+                    'protein_per_100g' => $food['protein_per_100g'],
+                    'carbs_per_100g' => $food['carbs_per_100g'],
+                    'fat_per_100g' => $food['fat_per_100g'],
+                ]
+            );
         }
     }
 }

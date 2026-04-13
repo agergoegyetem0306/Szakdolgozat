@@ -279,17 +279,17 @@ fun ActivityScreen(
                     Tab(
                         selected = selectedCategory == "cardio",
                         onClick = { selectedCategory = "cardio" },
-                        text = { Text("Cardio") }
+                        text = { Text("Kardió") }
                     )
                     Tab(
                         selected = selectedCategory == "strength",
                         onClick = { selectedCategory = "strength" },
-                        text = { Text("Strength") }
+                        text = { Text("Erő") }
                     )
                     Tab(
                         selected = selectedCategory == "mental",
                         onClick = { selectedCategory = "mental" },
-                        text = { Text("Mental") }
+                        text = { Text("Mentális") }
                     )
                 }
 
@@ -525,7 +525,7 @@ fun AddActivityDialog(
 
                 Row(modifier = Modifier.fillMaxWidth()) {
                     IntensityButton(
-                        text = "Low",
+                        text = "Alacsony",
                         selected = selectedIntensity == "low",
                         onClick = { selectedIntensity = "low" },
                         modifier = Modifier.weight(1f)
@@ -534,7 +534,7 @@ fun AddActivityDialog(
                     Spacer(modifier = Modifier.width(8.dp))
 
                     IntensityButton(
-                        text = "Medium",
+                        text = "Közepes",
                         selected = selectedIntensity == "medium",
                         onClick = { selectedIntensity = "medium" },
                         modifier = Modifier.weight(1f)
@@ -543,7 +543,7 @@ fun AddActivityDialog(
                     Spacer(modifier = Modifier.width(8.dp))
 
                     IntensityButton(
-                        text = "High",
+                        text = "Magas",
                         selected = selectedIntensity == "high",
                         onClick = { selectedIntensity = "high" },
                         modifier = Modifier.weight(1f)
@@ -642,33 +642,33 @@ fun categoryIndex(category: String): Int {
 
 fun categoryTitle(category: String): String {
     return when (category) {
-        "cardio" -> "Cardio"
-        "strength" -> "Strength"
-        "mental" -> "Mental"
+        "cardio" -> "Kardió"
+        "strength" -> "Erő"
+        "mental" -> "Mentális"
         else -> category
     }
 }
 
 fun readableActivityType(type: String): String {
     return when (type) {
-        "running" -> "Running"
-        "walking" -> "Walking"
-        "cycling" -> "Cycling"
-        "swimming" -> "Swimming"
-        "weightlifting" -> "Weightlifting"
-        "bodyweight" -> "Bodyweight"
-        "meditation" -> "Meditation"
-        "yoga" -> "Yoga"
-        "reading" -> "Reading"
+        "running" -> "Futás"
+        "walking" -> "Séta"
+        "cycling" -> "Biciklizés"
+        "swimming" -> "Úszás"
+        "weightlifting" -> "Súlyzós edzés"
+        "bodyweight" -> "Saját testsúlyos edzés"
+        "meditation" -> "Meditáció"
+        "yoga" -> "Jóga"
+        "reading" -> "Olvasás"
         else -> type
     }
 }
 
 fun readableIntensity(intensity: String): String {
     return when (intensity) {
-        "low" -> "Low"
-        "medium" -> "Medium"
-        "high" -> "High"
+        "low" -> "Alacsony"
+        "medium" -> "Közepes"
+        "high" -> "Magas"
         else -> intensity
     }
 }

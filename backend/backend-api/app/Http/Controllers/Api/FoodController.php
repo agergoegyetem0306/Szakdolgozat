@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Models\Food;
 use App\Models\FoodLog;
+use App\Services\ChallengeProgressService;
 use App\Services\StreakService;
 use App\Services\XpService;
 use Carbon\Carbon;
@@ -31,7 +32,20 @@ class FoodController extends Controller
             ->orderBy('name')
             ->get();
 
-        return response()->json($foods);
+        return response()->json(
+            $foods->map(function ($food) {
+                return [
+                    'id' => (int) $food->id,
+                    'name' => (string) $food->name,
+                    'calories_per_100g' => (float) $food->calories_per_100g,
+                    'protein_per_100g' => (float) $food->protein_per_100g,
+                    'carbs_per_100g' => (float) $food->carbs_per_100g,
+                    'fat_per_100g' => (float) $food->fat_per_100g,
+                    'is_custom' => (bool) $food->is_custom,
+                    'user_id' => $food->user_id ? (int) $food->user_id : null,
+                ];
+            })->values()
+        );
     }
 
     public function storeCustomFood(Request $request)
@@ -59,8 +73,12 @@ class FoodController extends Controller
         return response()->json($food, 201);
     }
 
-    public function storeLog(Request $request, XpService $xpService, StreakService $streakService)
-    {
+    public function storeLog(
+        Request $request,
+        XpService $xpService,
+        StreakService $streakService,
+        ChallengeProgressService $challengeProgressService
+    ) {
         $user = $request->get('auth_user');
 
         $validated = $request->validate([
@@ -104,6 +122,7 @@ class FoodController extends Controller
 
         $dailyXpLog = $xpService->recalculateToday($freshUser);
         $streakData = $streakService->recalculate($freshUser->fresh());
+        $dailyChallenge = $challengeProgressService->checkTodayChallenge($freshUser->fresh());
 
         return response()->json([
             'food_log' => $foodLog->load('food'),
@@ -114,6 +133,21 @@ class FoodController extends Controller
                 'user_total_xp' => $freshUser->fresh()->xp,
             ],
             'streak' => $streakData,
+            'daily_challenge' => $dailyChallenge ? [
+                'id' => $dailyChallenge->id,
+                'is_completed' => $dailyChallenge->is_completed,
+                'reward_granted' => $dailyChallenge->reward_granted,
+                'challenge' => [
+                    'id' => $dailyChallenge->challenge->id,
+                    'title' => $dailyChallenge->challenge->title,
+                    'description' => $dailyChallenge->challenge->description,
+                    'challenge_type' => $dailyChallenge->challenge->challenge_type,
+                    'category' => $dailyChallenge->challenge->category,
+                    'activity_type' => $dailyChallenge->challenge->activity_type,
+                    'target_value' => $dailyChallenge->challenge->target_value,
+                    'reward_xp' => $dailyChallenge->challenge->reward_xp,
+                ],
+            ] : null,
         ], 201);
     }
 

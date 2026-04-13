@@ -1,6 +1,8 @@
 package com.example.gamifikalt_fitnessz_alkalmazas
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -25,6 +27,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -141,6 +144,27 @@ fun WeeklyStatsScreen(
 
                 WeeklyStatsCard {
                     Text(
+                        text = "Heti XP grafikon",
+                        style = MaterialTheme.typography.titleLarge
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = "Napi össz XP eloszlás",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+
+                    Spacer(modifier = Modifier.height(20.dp))
+
+                    WeeklyXpBarChart(days = weekly.days)
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                WeeklyStatsCard {
+                    Text(
                         text = "Heti összesítés",
                         style = MaterialTheme.typography.titleLarge
                     )
@@ -175,42 +199,6 @@ fun WeeklyStatsScreen(
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
-
-                WeeklyStatsCard {
-                    Text(
-                        text = "Napi bontás",
-                        style = MaterialTheme.typography.titleLarge
-                    )
-
-                    Spacer(modifier = Modifier.height(14.dp))
-
-                    weekly.days.forEachIndexed { index, day ->
-                        WeeklyDayItemCard(day = day)
-
-                        if (index != weekly.days.lastIndex) {
-                            Spacer(modifier = Modifier.height(12.dp))
-                        }
-                    }
-                }
-
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-
-            Button(
-                onClick = { loadStats() },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(54.dp),
-                shape = RoundedCornerShape(18.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.primary,
-                    contentColor = MaterialTheme.colorScheme.onPrimary
-                )
-            ) {
-                Text(
-                    text = "Frissítés",
-                    style = MaterialTheme.typography.labelLarge
-                )
             }
 
             Spacer(modifier = Modifier.height(12.dp))
@@ -286,72 +274,68 @@ fun WeeklyMiniStatCard(
 }
 
 @Composable
-fun WeeklyDayItemCard(day: WeeklyStatsDayResponse) {
-    Card(
-        shape = RoundedCornerShape(20.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-        modifier = Modifier.fillMaxWidth()
+fun WeeklyXpBarChart(days: List<WeeklyStatsDayResponse>) {
+    val maxXp = (days.maxOfOrNull { it.xp_total } ?: 1).coerceAtLeast(1)
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(220.dp),
+        horizontalArrangement = Arrangement.spacedBy(10.dp),
+        verticalAlignment = Alignment.Bottom
     ) {
-        Column(
-            modifier = Modifier.padding(16.dp)
-        ) {
-            Text(
-                text = day.date,
-                style = MaterialTheme.typography.titleMedium
-            )
+        days.forEach { day ->
+            val ratio = day.xp_total.toFloat() / maxXp.toFloat()
 
-            Spacer(modifier = Modifier.height(10.dp))
+            Column(
+                modifier = Modifier.weight(1f),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.Bottom
+            ) {
+                Text(
+                    text = day.xp_total.toString(),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
 
-            Text(
-                text = "Aktivitáspont: ${day.activity_points}",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+                Spacer(modifier = Modifier.height(8.dp))
 
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Text(
-                text = "Kalória: ${day.calories} kcal",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Text(
-                text = "XP összesen: ${day.xp_total}",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Text(
-                text = "Aktivitás XP: ${day.xp_activity}",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-
-            Spacer(modifier = Modifier.height(4.dp))
-
-            Text(
-                text = "Táplálkozás XP: ${day.xp_nutrition}",
-                style = MaterialTheme.typography.bodyMedium,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
-
-            Spacer(modifier = Modifier.height(10.dp))
-
-            Text(
-                text = if (day.successful) "Sikeres nap" else "Nem teljesült",
-                style = MaterialTheme.typography.bodyMedium,
-                color = if (day.successful) {
-                    MaterialTheme.colorScheme.primary
-                } else {
-                    MaterialTheme.colorScheme.error
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(150.dp),
+                    contentAlignment = Alignment.BottomCenter
+                ) {
+                    Box(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height((150f * ratio).dp)
+                            .background(
+                                color = if (day.successful) {
+                                    MaterialTheme.colorScheme.primary
+                                } else {
+                                    MaterialTheme.colorScheme.secondary
+                                },
+                                shape = RoundedCornerShape(14.dp)
+                            )
+                    )
                 }
-            )
+
+                Spacer(modifier = Modifier.height(8.dp))
+
+                Text(
+                    text = shortDateLabel(day.date),
+                    style = MaterialTheme.typography.bodySmall
+                )
+            }
         }
+    }
+}
+
+fun shortDateLabel(date: String): String {
+    return try {
+        date.takeLast(5).replace("-", ".")
+    } catch (_: Exception) {
+        date
     }
 }

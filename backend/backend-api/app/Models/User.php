@@ -51,5 +51,18 @@ class User extends Authenticatable
     {
         return $this->hasMany(DailyXpLog::class);
     }
+    public function dailyChallenges()
+    {
+        return $this->hasMany(UserDailyChallenge::class);
+    }
+    public function createdLeaderboards()
+    {
+        return $this->hasMany(Leaderboard::class, 'created_by');
+    }
+
+    public function leaderboardMemberships()
+    {
+        return $this->hasMany(LeaderboardMember::class);
+    }
 
 }

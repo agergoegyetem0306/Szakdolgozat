@@ -13,6 +13,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
@@ -28,6 +30,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import com.example.gamifikalt_fitnessz_alkalmazas.network.ApiClient
+import com.example.gamifikalt_fitnessz_alkalmazas.network.DailyChallengeResponse
 import com.example.gamifikalt_fitnessz_alkalmazas.network.XpSummaryResponse
 import com.example.gamifikalt_fitnessz_alkalmazas.ui.theme.CardBackground
 import com.example.gamifikalt_fitnessz_alkalmazas.ui.theme.ProgressGreen
@@ -44,6 +47,7 @@ fun HomeScreen(
     onActivityClick: () -> Unit = {},
     onConsumptionClick: () -> Unit = {},
     onWeeklyStatsClick: () -> Unit = {},
+    onLeaderboardsClick: () -> Unit = {},
     onLogout: () -> Unit = {}
 ) {
     val context = LocalContext.current
@@ -52,8 +56,9 @@ fun HomeScreen(
     var loading by remember { mutableStateOf(true) }
     var errorText by remember { mutableStateOf<String?>(null) }
     var xpSummary by remember { mutableStateOf<XpSummaryResponse?>(null) }
+    var dailyChallenge by remember { mutableStateOf<DailyChallengeResponse?>(null) }
 
-    fun loadXpSummary() {
+    fun loadDashboard() {
         loading = true
         errorText = null
 
@@ -63,12 +68,33 @@ fun HomeScreen(
                     call: Call<XpSummaryResponse>,
                     response: Response<XpSummaryResponse>
                 ) {
-                    loading = false
                     if (response.isSuccessful && response.body() != null) {
                         xpSummary = response.body()
                     } else {
                         errorText = "Az XP adatok betöltése sikertelen"
                     }
+
+                    ApiClient.create(context).getDailyChallenge()
+                        .enqueue(object : Callback<DailyChallengeResponse> {
+                            override fun onResponse(
+                                call: Call<DailyChallengeResponse>,
+                                response: Response<DailyChallengeResponse>
+                            ) {
+                                loading = false
+                                if (response.isSuccessful && response.body() != null) {
+                                    dailyChallenge = response.body()
+                                } else if (errorText == null) {
+                                    errorText = "A napi kihívás betöltése sikertelen"
+                                }
+                            }
+
+                            override fun onFailure(call: Call<DailyChallengeResponse>, t: Throwable) {
+                                loading = false
+                                if (errorText == null) {
+                                    errorText = "Hálózati hiba: ${t.message ?: "ismeretlen"}"
+                                }
+                            }
+                        })
                 }
 
                 override fun onFailure(call: Call<XpSummaryResponse>, t: Throwable) {
@@ -79,7 +105,7 @@ fun HomeScreen(
     }
 
     LaunchedEffect(Unit) {
-        loadXpSummary()
+        loadDashboard()
     }
 
     Surface(
@@ -285,6 +311,62 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(16.dp))
             }
 
+            if (dailyChallenge != null) {
+                DashboardCard {
+                    Text(
+                        text = "Mai kihívás",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Text(
+                        text = dailyChallenge!!.challenge.title,
+                        style = MaterialTheme.typography.titleLarge
+                    )
+
+                    Spacer(modifier = Modifier.height(6.dp))
+
+                    Text(
+                        text = dailyChallenge!!.challenge.description,
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    Text(
+                        text = "${dailyChallenge!!.progress.current} / ${dailyChallenge!!.progress.target}",
+                        style = MaterialTheme.typography.bodyMedium
+                    )
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    LinearProgressIndicator(
+                        progress = { dailyChallenge!!.progress.ratio.toFloat().coerceIn(0f, 1f) },
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(10.dp),
+                        color = progressColor(dailyChallenge!!.progress.ratio.toFloat()),
+                        trackColor = MaterialTheme.colorScheme.surfaceVariant
+                    )
+
+                    Spacer(modifier = Modifier.height(12.dp))
+
+                    Text(
+                        text = if (dailyChallenge!!.is_completed) "Teljesítve ✓" else "Folyamatban",
+                        style = MaterialTheme.typography.bodyLarge,
+                        color = if (dailyChallenge!!.is_completed) {
+                            MaterialTheme.colorScheme.primary
+                        } else {
+                            MaterialTheme.colorScheme.onSurface
+                        }
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(16.dp))
+            }
+
             DashboardCard {
                 Text(
                     text = "Gyorsmenü",
@@ -312,6 +394,13 @@ fun HomeScreen(
                 Spacer(modifier = Modifier.height(12.dp))
 
                 DashboardButton(
+                    text = "Ranglisták",
+                    onClick = onLeaderboardsClick
+                )
+
+                Spacer(modifier = Modifier.height(12.dp))
+
+                DashboardButton(
                     text = "Heti statisztika",
                     onClick = onWeeklyStatsClick
                 )
@@ -325,23 +414,6 @@ fun HomeScreen(
             }
 
             Spacer(modifier = Modifier.height(16.dp))
-
-            Button(
-                onClick = { loadXpSummary() },
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(54.dp),
-                shape = RoundedCornerShape(18.dp),
-                colors = ButtonDefaults.buttonColors(
-                    containerColor = MaterialTheme.colorScheme.surface,
-                    contentColor = MaterialTheme.colorScheme.onSurface
-                )
-            ) {
-                Text(
-                    text = "Frissítés",
-                    style = MaterialTheme.typography.labelLarge
-                )
-            }
 
             Spacer(modifier = Modifier.height(12.dp))
 

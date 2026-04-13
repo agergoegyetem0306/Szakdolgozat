@@ -176,8 +176,88 @@ data class WeeklyStatsResponse(
     val weekly_xp: Int,
     val successful_days: Int
 )
+data class DailyChallengeInfoResponse(
+    val id: Int,
+    val title: String,
+    val description: String,
+    val challenge_type: String,
+    val category: String?,
+    val activity_type: String?,
+    val target_value: Int,
+    val reward_xp: Int
+)
+
+data class DailyChallengeProgressResponse(
+    val current: Double,
+    val target: Int,
+    val ratio: Double
+)
+
+data class DailyChallengeResponse(
+    val id: Int,
+    val challenge_date: String,
+    val is_completed: Boolean,
+    val completed_at: String?,
+    val reward_granted: Boolean,
+    val progress: DailyChallengeProgressResponse,
+    val challenge: DailyChallengeInfoResponse
+)
+data class CreateLeaderboardRequest(
+    val name: String,
+    val join_code: String?
+)
+
+data class JoinLeaderboardRequest(
+    val join_code: String
+)
+
+data class LeaderboardListItemResponse(
+    val id: Int,
+    val name: String,
+    val join_code: String,
+    val created_by: Int,
+    val members_count: Int
+)
+
+data class CreateLeaderboardResponse(
+    val message: String,
+    val leaderboard: LeaderboardListItemResponse
+)
+
+data class JoinLeaderboardResponse(
+    val message: String,
+    val leaderboard: LeaderboardListItemResponse
+)
+
+data class LeaderboardMemberEntryResponse(
+    val rank: Int,
+    val user_id: Int,
+    val name: String,
+    val weekly_xp: Int,
+    val is_me: Boolean
+)
+
+data class LeaderboardInfoResponse(
+    val id: Int,
+    val name: String,
+    val join_code: String,
+    val created_by: Int,
+    val creator_name: String?,
+    val member_count: Int,
+    val week_start: String,
+    val week_end: String
+)
+
+data class LeaderboardDetailResponse(
+    val leaderboard: LeaderboardInfoResponse,
+    val my_rank: Int?,
+    val members: List<LeaderboardMemberEntryResponse>
+)
 
 interface ApiService {
+
+    @GET("daily-challenge")
+    fun getDailyChallenge(): Call<DailyChallengeResponse>
 
     @GET("weekly-stats")
     fun getWeeklyStats(): Call<WeeklyStatsResponse>
@@ -229,4 +309,16 @@ interface ApiService {
 
     @GET("xp-summary")
     fun getXpSummary(): Call<XpSummaryResponse>
+
+    @GET("leaderboards")
+    fun getLeaderboards(): Call<List<LeaderboardListItemResponse>>
+
+    @POST("leaderboards")
+    fun createLeaderboard(@Body request: CreateLeaderboardRequest): Call<CreateLeaderboardResponse>
+
+    @POST("leaderboards/join")
+    fun joinLeaderboard(@Body request: JoinLeaderboardRequest): Call<JoinLeaderboardResponse>
+
+    @GET("leaderboards/{id}")
+    fun getLeaderboardDetail(@retrofit2.http.Path("id") id: Int): Call<LeaderboardDetailResponse>
 }
