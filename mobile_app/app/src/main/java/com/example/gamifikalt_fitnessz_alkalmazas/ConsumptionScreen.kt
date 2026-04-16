@@ -413,7 +413,33 @@ fun ConsumptionScreen(
                             )
                         } else {
                             logs.forEach { log ->
-                                FoodLogItemCard(log = log)
+                                FoodLogItemCard(
+                                    log = log,
+                                    onDeleteClick = {
+                                        errorText = null
+                                        successText = null
+
+                                        ApiClient.create(context)
+                                            .deleteFoodLog(log.id)
+                                            .enqueue(object : Callback<Map<String, Any>> {
+                                                override fun onResponse(
+                                                    call: Call<Map<String, Any>>,
+                                                    response: Response<Map<String, Any>>
+                                                ) {
+                                                    if (response.isSuccessful) {
+                                                        successText = "A fogyasztási bejegyzés törölve lett"
+                                                        loadData()
+                                                    } else {
+                                                        errorText = "A fogyasztás törlése sikertelen"
+                                                    }
+                                                }
+
+                                                override fun onFailure(call: Call<Map<String, Any>>, t: Throwable) {
+                                                    errorText = "Hálózati hiba: ${t.message ?: "ismeretlen"}"
+                                                }
+                                            })
+                                    }
+                                )
                                 Spacer(modifier = Modifier.height(12.dp))
                             }
                         }
@@ -580,49 +606,70 @@ fun MacroStatCard(
 }
 
 @Composable
-fun FoodLogItemCard(log: FoodLogResponse) {
+fun FoodLogItemCard(
+    log: FoodLogResponse,
+    onDeleteClick: () -> Unit
+) {
     Card(
         shape = RoundedCornerShape(22.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         colors = CardDefaults.cardColors(containerColor = CardBackground),
         modifier = Modifier.fillMaxWidth()
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(18.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+                .padding(18.dp)
         ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = log.food?.name ?: "Ismeretlen étel",
-                    style = MaterialTheme.typography.titleMedium
-                )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = log.food?.name ?: "Ismeretlen étel",
+                        style = MaterialTheme.typography.titleMedium
+                    )
 
-                Spacer(modifier = Modifier.height(6.dp))
+                    Spacer(modifier = Modifier.height(6.dp))
 
-                Text(
-                    text = "Mennyiség: ${log.quantity_grams} g",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                    Text(
+                        text = "Mennyiség: ${log.quantity_grams} g",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(4.dp))
 
-                Text(
-                    text = "Fehérje: ${log.protein} g • Szénhidrát: ${log.carbs} g • Zsír: ${log.fat} g",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
+                    Text(
+                        text = "Fehérje: ${log.protein} g • Szénhidrát: ${log.carbs} g",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
 
-            Spacer(modifier = Modifier.width(12.dp))
+                    Spacer(modifier = Modifier.height(2.dp))
 
-            Column {
-                Text(
-                    text = "${log.calories} kcal",
-                    style = MaterialTheme.typography.titleMedium
-                )
+                    Text(
+                        text = "Zsír: ${log.fat} g",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+
+                Spacer(modifier = Modifier.width(12.dp))
+
+                Column(horizontalAlignment = androidx.compose.ui.Alignment.End) {
+                    Text(
+                        text = "${log.calories} kcal",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    TextButton(onClick = onDeleteClick) {
+                        Text("Törlés")
+                    }
+                }
             }
         }
     }
@@ -760,7 +807,7 @@ fun GoalOptionCard(
             modifier = Modifier.padding(18.dp)
         ) {
             Text(
-                text = goalLabel(option.label),
+                text = goalLabel(option.goal_type),
                 style = MaterialTheme.typography.titleMedium,
                 color = if (selected) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface
             )

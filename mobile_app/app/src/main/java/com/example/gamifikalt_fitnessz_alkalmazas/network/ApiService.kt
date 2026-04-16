@@ -2,6 +2,7 @@ package com.example.gamifikalt_fitnessz_alkalmazas.network
 
 import retrofit2.Call
 import retrofit2.http.Body
+import retrofit2.http.DELETE
 import retrofit2.http.GET
 import retrofit2.http.POST
 import retrofit2.http.PUT
@@ -321,4 +322,10 @@ interface ApiService {
 
     @GET("leaderboards/{id}")
     fun getLeaderboardDetail(@retrofit2.http.Path("id") id: Int): Call<LeaderboardDetailResponse>
+
+    @DELETE("activities/{id}")
+    fun deleteActivity(@retrofit2.http.Path("id") id: Int): Call<Map<String, Any>>
+
+    @DELETE("food-logs/{id}")
+    fun deleteFoodLog(@retrofit2.http.Path("id") id: Int): Call<Map<String, Any>>
 }

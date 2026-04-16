@@ -143,4 +143,57 @@ class ActivityController extends Controller
             'activity_count' => $activities->count(),
         ]);
     }
+    public function destroy(
+        Request $request,
+        int $id,
+        XpService $xpService,
+        StreakService $streakService,
+        ChallengeProgressService $challengeProgressService
+    ) {
+        $user = $request->get('auth_user');
+
+        $activity = ActivityLog::where('id', $id)
+            ->where('user_id', $user->id)
+            ->first();
+
+        if (!$activity) {
+            return response()->json([
+                'message' => 'Az aktivitás nem található.',
+            ], 404);
+        }
+
+        $activity->delete();
+
+        $freshUser = $user->fresh();
+
+        $dailyXpLog = $xpService->recalculateToday($freshUser);
+        $streakData = $streakService->recalculate($freshUser->fresh());
+        $dailyChallenge = $challengeProgressService->checkTodayChallenge($freshUser->fresh());
+
+        return response()->json([
+            'message' => 'Az aktivitás törölve lett.',
+            'xp' => [
+                'activity_xp' => $dailyXpLog->activity_xp,
+                'nutrition_xp' => $dailyXpLog->nutrition_xp,
+                'total_xp_today' => $dailyXpLog->total_xp,
+                'user_total_xp' => $freshUser->fresh()->xp,
+            ],
+            'streak' => $streakData,
+            'daily_challenge' => $dailyChallenge ? [
+                'id' => $dailyChallenge->id,
+                'is_completed' => $dailyChallenge->is_completed,
+                'reward_granted' => $dailyChallenge->reward_granted,
+                'challenge' => [
+                    'id' => $dailyChallenge->challenge->id,
+                    'title' => $dailyChallenge->challenge->title,
+                    'description' => $dailyChallenge->challenge->description,
+                    'challenge_type' => $dailyChallenge->challenge->challenge_type,
+                    'category' => $dailyChallenge->challenge->category,
+                    'activity_type' => $dailyChallenge->challenge->activity_type,
+                    'target_value' => $dailyChallenge->challenge->target_value,
+                    'reward_xp' => $dailyChallenge->challenge->reward_xp,
+                ],
+            ] : null,
+        ]);
+    }
 }

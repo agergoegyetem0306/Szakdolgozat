@@ -331,7 +331,33 @@ fun ActivityScreen(
                 }
             } else {
                 filteredActivities.forEach { activity ->
-                    ActivityListCard(activity = activity)
+                    ActivityListCard(
+                        activity = activity,
+                        onDeleteClick = {
+                            errorText = null
+                            successText = null
+
+                            ApiClient.create(context)
+                                .deleteActivity(activity.id)
+                                .enqueue(object : Callback<Map<String, Any>> {
+                                    override fun onResponse(
+                                        call: Call<Map<String, Any>>,
+                                        response: Response<Map<String, Any>>
+                                    ) {
+                                        if (response.isSuccessful) {
+                                            successText = "Az aktivitás törölve lett"
+                                            loadData()
+                                        } else {
+                                            errorText = "Az aktivitás törlése sikertelen"
+                                        }
+                                    }
+
+                                    override fun onFailure(call: Call<Map<String, Any>>, t: Throwable) {
+                                        errorText = "Hálózati hiba: ${t.message ?: "ismeretlen"}"
+                                    }
+                                })
+                        }
+                    )
                     Spacer(modifier = Modifier.height(12.dp))
                 }
             }
@@ -402,49 +428,62 @@ fun ActivityDashboardCard(
 }
 
 @Composable
-fun ActivityListCard(activity: ActivityLogResponse) {
+fun ActivityListCard(
+    activity: ActivityLogResponse,
+    onDeleteClick: () -> Unit
+) {
     Card(
         shape = RoundedCornerShape(22.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 2.dp),
         colors = CardDefaults.cardColors(containerColor = CardBackground),
         modifier = Modifier.fillMaxWidth()
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(18.dp),
-            horizontalArrangement = Arrangement.SpaceBetween
+                .padding(18.dp)
         ) {
-            Column(modifier = Modifier.weight(1f)) {
-                Text(
-                    text = readableActivityType(activity.activity_type),
-                    style = MaterialTheme.typography.titleMedium
-                )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Column(modifier = Modifier.weight(1f)) {
+                    Text(
+                        text = readableActivityType(activity.activity_type),
+                        style = MaterialTheme.typography.titleMedium
+                    )
 
-                Spacer(modifier = Modifier.height(6.dp))
+                    Spacer(modifier = Modifier.height(6.dp))
 
-                Text(
-                    text = "Intenzitás: ${readableIntensity(activity.intensity)}",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
+                    Text(
+                        text = "Intenzitás: ${readableIntensity(activity.intensity)}",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
 
-                Spacer(modifier = Modifier.height(4.dp))
+                    Spacer(modifier = Modifier.height(4.dp))
 
-                Text(
-                    text = "Időtartam: ${activity.duration_minutes} perc",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant
-                )
-            }
+                    Text(
+                        text = "Időtartam: ${activity.duration_minutes} perc",
+                        style = MaterialTheme.typography.bodyMedium,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
 
-            Spacer(modifier = Modifier.width(12.dp))
+                Spacer(modifier = Modifier.width(12.dp))
 
-            Column {
-                Text(
-                    text = "${activity.points} pont",
-                    style = MaterialTheme.typography.titleMedium
-                )
+                Column(horizontalAlignment = androidx.compose.ui.Alignment.End) {
+                    Text(
+                        text = "${activity.points} pont",
+                        style = MaterialTheme.typography.titleMedium
+                    )
+
+                    Spacer(modifier = Modifier.height(10.dp))
+
+                    TextButton(onClick = onDeleteClick) {
+                        Text("Törlés")
+                    }
+                }
             }
         }
     }
@@ -523,9 +562,10 @@ fun AddActivityDialog(
 
                 Spacer(modifier = Modifier.height(10.dp))
 
-                Row(modifier = Modifier.fillMaxWidth()) {
+                Row(modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(1.dp)) {
                     IntensityButton(
-                        text = "Alacsony",
+                        text = "I",
                         selected = selectedIntensity == "low",
                         onClick = { selectedIntensity = "low" },
                         modifier = Modifier.weight(1f)
@@ -534,7 +574,7 @@ fun AddActivityDialog(
                     Spacer(modifier = Modifier.width(8.dp))
 
                     IntensityButton(
-                        text = "Közepes",
+                        text = "II",
                         selected = selectedIntensity == "medium",
                         onClick = { selectedIntensity = "medium" },
                         modifier = Modifier.weight(1f)
@@ -543,7 +583,7 @@ fun AddActivityDialog(
                     Spacer(modifier = Modifier.width(8.dp))
 
                     IntensityButton(
-                        text = "Magas",
+                        text = "III",
                         selected = selectedIntensity == "high",
                         onClick = { selectedIntensity = "high" },
                         modifier = Modifier.weight(1f)

@@ -5,28 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="cc394efd-cfcc-4658-b274-5fe5a5a86932" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/backend/backend-api/app/Http/Controllers/Api/DailyChallengeController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/backend-api/app/Http/Controllers/Api/LeaderboardController.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/backend-api/app/Models/Challenge.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/backend-api/app/Models/Leaderboard.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/backend-api/app/Models/LeaderboardMember.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/backend-api/app/Models/UserDailyChallenge.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/backend-api/app/Services/ChallengeProgressService.php" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/backend-api/app/Services/DailyChallengeService.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/Docs/.~lock.Szakdolgozat_002.odt#" beforeDir="false" afterPath="$PROJECT_DIR$/Docs/.~lock.Szakdolgozat_002.odt#" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Docs/.~lock.Szakdolgozat_002.odt#" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/Docs/Szakdolgozat_002.odt" beforeDir="false" afterPath="$PROJECT_DIR$/Docs/Szakdolgozat_002.odt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/backend-api/app/Http/Controllers/Api/ActivityController.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend-api/app/Http/Controllers/Api/ActivityController.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/backend-api/app/Http/Controllers/Api/FoodController.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend-api/app/Http/Controllers/Api/FoodController.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/backend-api/app/Models/User.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend-api/app/Models/User.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/backend-api/database/seeders/DatabaseSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend-api/database/seeders/DatabaseSeeder.php" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/backend-api/database/seeders/FoodSeeder.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend-api/database/seeders/FoodSeeder.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/backend-api/routes/api.php" beforeDir="false" afterPath="$PROJECT_DIR$/backend/backend-api/routes/api.php" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/ActivityScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/ActivityScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/ConsumptionScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/ConsumptionScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/HomeScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/HomeScreen.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/MainActivity.kt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/WeeklyStatsScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/WeeklyStatsScreen.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/LoginScreen.kt" beforeDir="false" afterPath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/LoginScreen.kt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/network/ApiService.kt" beforeDir="false" afterPath="$PROJECT_DIR$/mobile_app/app/src/main/java/com/example/gamifikalt_fitnessz_alkalmazas/network/ApiService.kt" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -113,7 +100,9 @@
       <workItem from="1775739604513" duration="6873000" />
       <workItem from="1775815633742" duration="3588000" />
       <workItem from="1775910119456" duration="687000" />
-      <workItem from="1776076612782" duration="3848000" />
+      <workItem from="1776076612782" duration="5962000" />
+      <workItem from="1776154639973" duration="1284000" />
+      <workItem from="1776245319318" duration="20817000" />
     </task>
     <servers />
   </component>

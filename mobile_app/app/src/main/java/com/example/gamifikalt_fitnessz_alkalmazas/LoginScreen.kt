@@ -47,7 +47,6 @@ fun LoginScreen(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            // LOGO
             Image(
                 painter = painterResource(id = R.drawable.lvlup_logo),
                 contentDescription = "LvlUp Logo",
@@ -56,7 +55,6 @@ fun LoginScreen(
 
             Spacer(modifier = Modifier.height(40.dp))
 
-            // LOGIN CARD
             Card(
                 shape = RoundedCornerShape(28.dp),
                 elevation = CardDefaults.cardElevation(

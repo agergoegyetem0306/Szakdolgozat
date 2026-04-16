@@ -32,6 +32,8 @@ Route::middleware('api.token')->get('/leaderboards', [LeaderboardController::cla
 Route::middleware('api.token')->post('/leaderboards', [LeaderboardController::class, 'store']);
 Route::middleware('api.token')->post('/leaderboards/join', [LeaderboardController::class, 'join']);
 Route::middleware('api.token')->get('/leaderboards/{id}', [LeaderboardController::class, 'show']);
+Route::middleware('api.token')->delete('/activities/{id}', [ActivityController::class, 'destroy']);
+Route::middleware('api.token')->delete('/food-logs/{id}', [FoodController::class, 'destroyLog']);
 
 use Illuminate\Http\Request;
 
